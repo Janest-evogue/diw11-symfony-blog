@@ -29,9 +29,29 @@
                 <a class="navbar-brand" href="{{ path('app_index_index') }}">
                     Blog
                 </a>
+                {{ render(controller('App\\Controller\\CategoryController::menu')) }}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_security_register') }}">
+                            Inscription
+                        </a>
+                    </li>
+                </ul>
             </div>
         </nav>
         <div class="container">
+            {# affichage des messages flash #}
+            {% for type, flashes in app.session.flashBag.all %}
+                {% for message in flashes %}
+                    {# pour la classe alert-danger du bootstrap #}
+                    {% if type == 'error' %}
+                        {% set type = 'danger' %}
+                    {% endif %}
+                    <div class="mt-1 alert alert-{{ type }}">
+                        {{ message|raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
