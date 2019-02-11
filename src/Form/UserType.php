@@ -20,7 +20,15 @@ class UserType extends AbstractType
                 'lastname',
                 TextType::class,
                 [
-                    'label' => 'Nom'
+                    'label' => 'Nom',
+                    // attributs de la balise du champ de formulaire
+                    'attr' => [
+                        'class' => 'maclass',
+                    ],
+                    // attributs de la balise label
+                    'label_attr' => [
+                        'class' => 'class-label'
+                    ]
                 ]
             )
             ->add(
