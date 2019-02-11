@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gestion articles</h1>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Date de publication</th>
+            <th>Catégorie</th>
+            <th>Auteur</th>
+            <th width="250px"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.publicationDate|date('d/m/Y H:i') }}</td>
+                    <td>{{ article.category }}</td>
+                    <td>{{ article.author }}</td>
+                    <td></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">
+                        Aucun article
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
