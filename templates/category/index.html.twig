@@ -2,4 +2,13 @@
 
 {% block body %}
     <h1>{{ category }}</h1>
+
+    <h2>Derniers articles</h2>
+    {% for article in articles %}
+        <a href="{{ path('app_article_index', {'id': article.id}) }}">
+            {{ article.title }}
+        </a><br>
+    {% else %}
+        <p>Aucun article dans cette catégorie</p>
+    {% endfor %}
 {% endblock %}
