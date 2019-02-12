@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Edition article</h1>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.image) }}
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">
+            Enregistrer
+        </button>
+        <a href="{{ path('app_admin_article_index') }}"
+           class="btn btn-outline-secondary">
+            Retour
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

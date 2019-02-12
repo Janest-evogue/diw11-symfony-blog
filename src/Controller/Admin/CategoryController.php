@@ -92,7 +92,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}")
+     * @Route("/suppression/{id}")
      */
     public function delete(Category $category)
     {

@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'fr'
+    # répertoire d'upload d'images
+    # %kernel.project_dir% : la racine du projet
+    upload_dir: '%kernel.project_dir%/public/images/'
 
 services:
     # default configuration for services in *this* file
