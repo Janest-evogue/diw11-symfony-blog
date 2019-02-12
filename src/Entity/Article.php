@@ -51,6 +51,9 @@ class Article
     /**
      * @var mixed
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\Image(maxSize="1M",
+     *  maxSizeMessage="Le fichier ne doit pas faire plus de 1Mo",
+     *  mimeTypesMessage="Le fichier doit être une image")
      */
     private $image;
 

@@ -10,6 +10,13 @@
     {{ form_row(form.category) }}
     {{ form_row(form.image) }}
 
+    {% if original_image is not null %}
+        <p>
+            Actuellement :
+            <img src="{{ asset('images/' ~ original_image) }}" height="200px">
+        </p>
+    {% endif %}
+
     <div class="text-right">
         <button type="submit" class="btn btn-primary">
             Enregistrer

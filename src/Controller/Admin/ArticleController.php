@@ -7,8 +7,10 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -60,14 +62,32 @@ class ArticleController extends AbstractController
     public function edit(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $originalImage = null;
 
         if (is_null($id)) { // création
             $article = new Article();
             $article->setAuthor($this->getUser());
             // passe dans le constructeur de la classe Article
             // $article->setPublicationDate(new \DateTime());
-        } else {
+        } else { //modification
             $article = $em->find(Article::class, $id);
+
+            // 404 si l'id reçu dans l'url n'est pas en bdd
+            if (is_null($article)) {
+                throw new NotFoundHttpException();
+            }
+
+            // si l'article contient une image
+            if (!is_null($article->getImage())) {
+                // nom du fichier venant de la bdd
+                $originalImage = $article->getImage();
+
+                // on sette l'image avec un objet File
+                // pour le traitement par le formulaire
+                $article->setImage(
+                    new File($this->getParameter('upload_dir') . $originalImage)
+                );
+            }
         }
 
         $form = $this->createForm(ArticleType::class, $article);
@@ -96,6 +116,16 @@ class ArticleController extends AbstractController
                     // on sette l'attribut image de l'article avec le nom
                     // de l'image pour enregistrement en bdd
                     $article->setImage($filename);
+
+                    // en modification, on supprime l'ancienne image
+                    // s'il y en a une
+                    if (!is_null($originalImage)) {
+                        unlink($this->getParameter('upload_dir') . $originalImage);
+                    }
+                } else {
+                    // sans upload, pour la modification, on sette l'attribut image
+                    // avec le nom de l'ancienne image
+                    $article->setImage($originalImage);
                 }
 
                 $em->persist($article);
@@ -113,7 +143,8 @@ class ArticleController extends AbstractController
         return $this->render(
             'admin/article/edit.html.twig',
             [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'original_image' => $originalImage
             ]
         );
     }
